@@ -19,7 +19,7 @@ const unsigned short pin = 12;
 const unsigned short lenght_refrain = 6;
 const unsigned short lenght_strophe = 7;
 
-//Deklarationen von allen funktionen
+//Deklarationen von allen funktionen, dann kann man die Funktionen unten in beliebiger Reihenfolge schreiben
 void strophe ();
 void refrain ();
 void play(const note* notes, const char** texte , unsigned short length);
