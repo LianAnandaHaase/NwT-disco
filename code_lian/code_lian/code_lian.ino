@@ -13,11 +13,29 @@ enum note {
     H = 494   // 493.88
 };
 
+enum tone_length {
+    _32  = 1,
+    _16  = 2,
+    _16p = 3,
+    _8   = 4,
+    _8p  = 6,
+    _4   = 8,
+    _4p  = 12,
+    _2   = 16,
+    _2p  = 24,
+    _1   = 32
+};
+
+struct note_hoehe_laenge {
+    note tonhoehe;
+    tone_length length;
+};
+
 //globale Konstanten, hier wird der pin für den lautsprecher und und die geschwindigkeit festgelegt
-const unsigned short tone_length = 250;
+const unsigned short tone_length = 70;
 const unsigned short pin = 12;
-const unsigned short lenght_refrain = 6;
-const unsigned short lenght_strophe = 7;
+const unsigned short lenght_refrain = 5;
+const unsigned short lenght_strophe = 6;
 
 //Deklarationen von allen funktionen, dann kann man die Funktionen unten in beliebiger Reihenfolge schreiben
 void strophe ();
@@ -30,24 +48,23 @@ void playOnSpeaker (int pin, note n);
 LiquidCrystal_I2C lcd(0x27, 16, 2); // Adjust address and dimensions if needed
 
 //array mit den lyrics des refrains
-const char* lyricsRefrain[lenght_refrain] = { "Oh", "Oh Oh", "Oh Oh Oh", "Oh Oh Oh Oh", "Oh Oh Oh Oh Oh", "Oh Oh Oh Oh Oh" };
+const char* lyricsRefrain[lenght_refrain] = { "Oh", "Oh Oh", "Oh Oh Oh", "Oh Oh Oh Oh", "Oh Oh Oh Oh Oh"};
 
 //array mit den preisen an der bar
 const char* preise[lenght_strophe] = {
     "Bier         6$",
-    "Bier         6$",
+    "Cola         6$",
     "Vodka Lemon  9$",
-    "Vodka Lemon  9$",
-    "special     11$",
-    "special     11$",
-    "alle mitsingen!"
+    "Gin tonic    9$",
+    "Fanta       11$",
+    "Sprite      11$"
 };
 
 //array von noten der strophe
-note notesStrophe[lenght_strophe] = { E, E, G, E, D, C, B };
+note_hoehe_laenge notesStrophe[lenght_strophe] = { {E, _4}, {G, _8}, {E, _4}, {D, _4}, {C, _4}, {B, _8} };
 
 //array von noten des refrain
-note notesRefrain[lenght_refrain] = { E, E, G, E, D, C };
+note_hoehe_laenge notesRefrain[lenght_refrain] = { {E, _4},  {G, _4}, {E, _8},{D, _4} , {C, _4} };
 
 
 
@@ -80,15 +97,15 @@ void strophe ()
 }
 
 //funktion, die einen array von note abspielen kann, ihr wird das richtige array mithile eines zeigers übergeben.
-void play(const note* notes, const char** texte , unsigned short length)
+void play(const note_hoehe_laenge* tones, const char** texte , unsigned short length)
 {
     for (int i = 0; i < length; i++)
     {
         displayText(texte[i]);
 
-        playOnSpeaker (pin, notes[i]);
+        playOnSpeaker (tones[i].tonhoehe );
 
-        delay (tone_length);
+        delay (tone_length * tones[i].length);
 
     }
 }
@@ -104,7 +121,7 @@ void displayText (const char* text)
 }
 
 //funktion, die noten abspielt, am richtigen pin, mit der richtigen frequenz
-void playOnSpeaker (int pin, note n)
+void playOnSpeaker (note n)
 {
     int f = n; //umwandlung in integer ist automatisch
     tone (pin, f);
