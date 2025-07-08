@@ -43,6 +43,7 @@ void refrain ();
 void play(const note* notes, const char** texte , unsigned short length);
 void displayText (const char* text);
 void playOnSpeaker (int pin, note n);
+char* substr(char* arr, int begin, int len);
 
 // Set the LCD address to 0x27 (or 0x3f, etc.) for a 16x2 LCD. Check your LCD module's documentation.
 LiquidCrystal_I2C lcd(0x27, 16, 2); // Adjust address and dimensions if needed
@@ -149,10 +150,34 @@ void play(const note_hoehe_laenge* tones, const char** texte , unsigned short le
 void displayText (const char* text)
 {
   lcd.clear();
-  // Set the cursor to the first column and first row
   lcd.setCursor(0, 0);
   
-  lcd.print(text);
+  int laenge =strlen (text);
+  if (laenge <= 16){
+      lcd.print(text);
+  }
+  else {
+    char* text_1 = substr(text, 0, 16);
+    char* text_2 = substr(text, 16, laenge - 16);
+
+    lcd.print(text_1);
+    lcd.setCursor(0, 1);
+    lcd.print(text_2);
+  }
+  
+ 
+  // Set the cursor to the first column and first row
+
+}
+
+//funktion, die einen teil der zeichenkette extrahiert
+char* substr(char* arr, int begin, int len)
+{
+    char* res = new char[len + 1];
+    for (int i = 0; i < len; i++)
+        res[i] = *(arr + begin + i);
+    res[len] = 0;
+    return res;
 }
 
 //funktion, die noten abspielt, am richtigen pin, mit der richtigen frequenz
