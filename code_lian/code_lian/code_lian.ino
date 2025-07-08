@@ -1,3 +1,4 @@
+//includirungen für lcd display
 #include <Wire.h>
 #include <LiquidCrystal_I2C.h>
 
@@ -13,6 +14,7 @@ enum note {
     H = 494   // 493.88
 };
 
+//enumeration für ton längen
 enum tone_length {
     _32  = 1,
     _16  = 2,
@@ -26,6 +28,7 @@ enum tone_length {
     _1   = 32
 };
 
+//typ für töne mit bestimter frequenz und und länge
 struct note_hoehe_laenge {
     note tonhoehe;
     tone_length length;
@@ -33,7 +36,8 @@ struct note_hoehe_laenge {
 
 //globale Konstanten, hier wird der pin für den lautsprecher und und die geschwindigkeit festgelegt
 const unsigned short tone_length = 70;
-const unsigned short pin = 12;
+const unsigned short pause = 20; //kurze lücke zwisch noten, um kurzt geiche hinter einander von langen zu unterscheiden.
+const unsigned short pin = 12; //pin an den der lautsprecher angeschlossen ist
 const unsigned short length_refrain = 30;
 const unsigned short length_strophe = 35;
 
@@ -59,7 +63,7 @@ const char* lyricsRefrain[length_refrain] = {
   "and", "go"                          // and go
 };
 
-//array mit den preisen an der bar
+//array mit den lyrics der strophe
 const char* lyricsStrophe[length_strophe] = {
   "There", "once", "was", "a",           // 4
   "ship", "that", "put", "to",           // 8
@@ -72,7 +76,7 @@ const char* lyricsStrophe[length_strophe] = {
   "bul", "ly", "blow"                    // 35
 };
 
-//array von noten der strophe
+//array mit den tönen der strophe
 note_hoehe_laenge notesStrophe[length_strophe] = {
   {E, _8}, {F, _8}, {G, _8}, {E, _8},     // There once was a ship
   {F, _8}, {G, _8}, {A, _8}, {G, _8},     // that put to sea
@@ -102,10 +106,7 @@ note_hoehe_laenge notesRefrain[length_refrain] = {
   {F, _8}, {E, _8}, {D, _4}              // leave and go
 };
 
-
-
 void setup() {
-  // put your setup code here, to run once:
   pinMode(pin, OUTPUT);
 
   // Initialize the LCD
@@ -115,7 +116,6 @@ void setup() {
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
     strophe ();
     refrain ();
 }
@@ -132,7 +132,7 @@ void strophe ()
     play(notesStrophe, lyricsStrophe, length_strophe);
 }
 
-//funktion, die einen array von note abspielen kann, ihr wird das richtige array mithile eines zeigers übergeben.
+//funktion, die einen array von noten abspielt
 void play(const note_hoehe_laenge* tones, const char** texte , unsigned short length)
 {
     for (int i = 0; i < length; i++)
@@ -141,7 +141,9 @@ void play(const note_hoehe_laenge* tones, const char** texte , unsigned short le
 
         playOnSpeaker (tones[i].tonhoehe );
 
-        delay (tone_length * tones[i].length);
+        delay (tone_length * tones[i].length - pause);
+        tone(pin, 0);
+        delay(pause);
 
     }
 }
@@ -149,29 +151,30 @@ void play(const note_hoehe_laenge* tones, const char** texte , unsigned short le
 //funktion, die text auf dem display anzeigt
 void displayText (const char* text)
 {
-  lcd.clear();
-  lcd.setCursor(0, 0);
-  
-  int laenge =strlen (text);
-  if (laenge <= 16){
-      lcd.print(text);
-  }
-  else {
-    char* text_1 = substr(text, 0, 16);
-    char* text_2 = substr(text, 16, laenge - 16);
+    lcd.clear();
+    lcd.setCursor(0, 0); //setzt den cursor nach oben links
+    
+    int laenge = strlen (text); //speichert die länge des ausugebennen text als variable
 
-    lcd.print(text_1);
-    lcd.setCursor(0, 1);
-    lcd.print(text_2);
-  }
-  
+    if(laenge > 32)  //falls mehr als 32 zeichen eingegeben werden solten, wird das nach der 32 stelle ignoriert.
+        laenge = 32;
+    
+    if (laenge <= 16){  //fals weniger als 16 zeichen eingegeben werden, können diese direkt ohne zeilenumbruch angezeigt werden.
+        lcd.print(text);
+    }
+    else {              //fals es aber mehr als 16 seinen solten, muss er nach der 16 stelle getrennt werden, und der teil danach in der nächsten zeile angezeigt werden
+        const char* text_1 = substr(text, 0, 16);            //die ersten 16 zeichen werden als eigene zeichenkette abgespeichert
+        const char* text_2 = substr(text, 16, laenge - 16);  //die zeichen nach der 16. setelle werden in einem anderen char array gespeichert, um diese dann in der zweiten zeile anzuzeigen
+    
+        lcd.print(text_1);   //schreibt den ersten teil in die erste zeile
+        lcd.setCursor(0, 1); 
+        lcd.print(text_2);
+    }
  
-  // Set the cursor to the first column and first row
-
-}
+ }
 
 //funktion, die einen teil der zeichenkette extrahiert
-char* substr(char* arr, int begin, int len)
+char* substr(const char* arr, int begin, int len)
 {
     char* res = new char[len + 1];
     for (int i = 0; i < len; i++)
