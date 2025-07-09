@@ -4,6 +4,8 @@
 
 //enumeration für noten, die gleich mit der jeweiligen frequenz verknüpft sind.
 enum note {
+    a = 220,
+    h = 247,
     C = 262,  // gerundet von 261.63
     D = 294,  // 293.66
     E = 330,  // 329.63
@@ -11,7 +13,7 @@ enum note {
     G = 392,
     A = 440,
     B = 466,
-    H = 494   // 493.88
+    H = 494  // 493.88
 };
 
 //enumeration für ton längen
@@ -36,7 +38,7 @@ struct note_hoehe_laenge {
 
 //globale Konstanten, hier wird der pin für den lautsprecher und und die geschwindigkeit festgelegt
 const unsigned short tone_length = 70;
-const unsigned short pause = 20; //kurze lücke zwisch noten, um kurzt geiche hinter einander von langen zu unterscheiden.
+const unsigned short pause = 10; //kurze lücke zwisch noten, um kurzt geiche hinter einander von langen zu unterscheiden.
 const unsigned short pin = 12; //pin an den der lautsprecher angeschlossen ist
 const unsigned short length_refrain = 30;
 const unsigned short length_strophe = 35;
@@ -54,56 +56,55 @@ LiquidCrystal_I2C lcd(0x27, 16, 2); // Adjust address and dimensions if needed
 
 //array mit den lyrics des refrains
 const char* lyricsRefrain[length_refrain] = {
-  "Soon", "may", "the", "Wel", "ler","man",   // Soon may the Wellerman
-  "come", "to", "bring", "us",         // come to bring us
-  "sugar", "and", "tea", "and",        // sugar and tea and
-  "rum", "One", "day", "when",         // rum. One day when
-  "the", "ton", "guin'", "is", "done",     // the tonguin' is done
-  "We'll", "take", "our", "leave",     // We'll take our leave
-  "and", "go"                          // and go
+  "Soon", "may", "the", "Wel", "ler","man",
+  "come", "and", "bring", "us",         
+  "sug", "ar", "and", "tea", "and", 
+  "rum", "One", "day", "when", 
+  "the", "ton", "guin'", "is", "done",
+  "We'll", "take", "our", "leave", 
+  "and", "go"
 };
 
 //array mit den lyrics der strophe
 const char* lyricsStrophe[length_strophe] = {
-  "There", "once", "was", "a",           // 4
-  "ship", "that", "put", "to",           // 8
-  "sea", "And", "the", "name",           // 12
-  "of", "that", "ship", "was",           // 16
-  "the", "Bil", "ly", "o'",              // 20
-  "Tea", "The", "winds", "blew",         // 24
-  "up", "her", "bow", "dipped",          // 28
-  "down", "O", "blow", "my",             // 32
-  "bul", "ly", "blow"                    // 35
+   "There", "once", "was", "a", "ship",       
+   "that", "put", "to", "sea",  
+   "The", "name", "of", "that", "ship",                
+   "was", "the", "Bil", "ly", "of", "Tea",         
+   "The", "winds", "blew",  "up",
+   "her", "bow", "dipped", "down",
+   "O", "blow", "my", "bul", "ly",
+   "boys", "blow"
 };
 
 //array mit den tönen der strophe
 note_hoehe_laenge notesStrophe[length_strophe] = {
-  {E, _8}, {F, _8}, {G, _8}, {E, _8},     // There once was a ship
-  {F, _8}, {G, _8}, {A, _8}, {G, _8},     // that put to sea
+  {E, _4}, {a, _4}, {a, _8}, {a, _8}, {a, _4},           // There once was a ship
+  {C, _4}, {E, _4}, {E, _4}, {E, _4p},                   // that put to sea
 
-  {A, _8}, {G, _8}, {F, _8}, {E, _8},     // And the name of that ship
-  {F, _8}, {E, _8}, {D, _8}, {E, _8},     // was the Billy o' Tea
+  {E, _8}, {F, _4}, {D, _8}, {D, _8}, {D, _4},           // The name of that ship
+  {D, _8}, {F, _8}, {A, _8}, {A, _8}, {E, _4}, {E, _4p}, // was the Billy of Tea
 
-  {F, _8}, {G, _8}, {A, _8}, {A, _8},     // The winds blew up
-  {G, _8}, {F, _8}, {E, _8}, {D, _8},     // her bow dipped down
+  {E, _8}, {a, _4}, {a, _4}, {a, _4},                    // The winds blew up
+  {C, _4}, {E, _4}, {E, _4}, {E, _4},                    // her bow dipped down
 
-  {E, _8}, {F, _8}, {G, _8}, {G, _8},     // O blow my bully
-  {F, _8}, {E, _8}, {D, _4}               // boys blow (huh!)
+  {E, _4}, {E, _4}, {D, _4}, {C, _8}, {C, _8},           // O blow my bully
+  {h, _4}, {a, _1},                                      // boys blow
 };
 
 //array von noten des refrain
 note_hoehe_laenge notesRefrain[length_refrain] = {
-  {E, _8}, {E, _8}, {F, _8}, {G, _8},    // Soon may the Weller-
-  {G, _8}, {F, _8}, {E, _8}, {D, _8},    // -man come
+  {A, _2}, {A, _4p}, {F, _8}, {G, _8}, {G, _8},    // Soon may the Weller-
+  {E, _4}, {E, _4p},                               // -man come
 
-  {E, _8}, {E, _8}, {F, _8}, {G, _8},    // To bring us sugar
-  {G, _8}, {F, _8}, {E, _8}, {D, _8},    // and tea and rum
+  {E, _8}, {F, _4}, {D, _4}, {D, _8}, {E, _8},     //  And bring us sugar
+  {F, _4}, {A, _4}, {E, _4}, {E, _2},              // and tea and rum
 
-  {E, _8}, {F, _8}, {G, _8}, {A, _4},    // One day when the
-  {G, _8}, {F, _8}, {E, _8},             // tonguin's done
+  {A, _2}, {A, _4}, {F, _8}, {F, _8},              // One day when the
+  {G, _8}, {G, _8}, {E, _4}, {E, _4},              // tonguin's done
 
-  {D, _8}, {E, _8}, {F, _8}, {G, _4},    // We'll take our
-  {F, _8}, {E, _8}, {D, _4}              // leave and go
+  {E, _4}, {E, _4}, {D, _4},                       // We'll take our 
+  {C, _4}, {h, _4}, {a, _2p}                       // leave and go
 };
 
 void setup() {
