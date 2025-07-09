@@ -56,25 +56,25 @@ LiquidCrystal_I2C lcd(0x27, 16, 2); // Adjust address and dimensions if needed
 
 //array mit den lyrics des refrains
 const char* lyricsRefrain[length_refrain] = {
-  "Soon", "may", "the", "Wel", "ler","man",
-  "come", "and", "bring", "us",         
-  "sug", "ar", "and", "tea", "and", 
-  "rum", "One", "day", "when", 
-  "the", "ton", "guin'", "is", "done",
-  "We'll", "take", "our", "leave", 
-  "and", "go"
+  "Soon", "Soon may", "Soon may the", "Wel", "Weller","Wellerman",
+  "Wellerman come", "and", "and bring", "and bring us",         
+  "and bring us    sug", "and bring us    sugar", "and", "and tea", "and tea and", 
+  "and tea and rum", "One", "One day", "One day when", 
+  "One day when the", "ton", "tonguin'", "tonguin'is", "tonguin'is done",
+  "We'll", "We'll take", "We'll take our", "We'll take our  leave", 
+  "and", "and go"
 };
 
 //array mit den lyrics der strophe
 const char* lyricsStrophe[length_strophe] = {
-   "There", "once", "was", "a", "ship",       
-   "that", "put", "to", "sea",  
-   "The", "name", "of", "that", "ship",                
-   "was", "the", "Bil", "ly", "of", "Tea",         
-   "The", "winds", "blew",  "up",
-   "her", "bow", "dipped", "down",
-   "O", "blow", "my", "bul", "ly",
-   "boys", "blow"
+   "There", "There once", "There once was", "There once was a", "There once was aship",       
+   "that", "that put", "that put to", "that put to sea",  
+   "The", "The name", "The name of", "The name of the the", "The name of the ship",                
+   "was", "was the", "was the Bil", "was the Billy", "was the Billy of", "was the billy ofTea",         
+   "The", "The winds", "The winds blew",  "The winds blew  up",
+   "her", "her bow", "her bow dipped", "her bow dipped  down",
+   "O", "O blow", "O blow my", "O blow my bul", "Oh blow my bully",
+   "boys", "boys blow"
 };
 
 //array mit den tönen der strophe
@@ -82,7 +82,7 @@ note_hoehe_laenge notesStrophe[length_strophe] = {
   {E, _4}, {a, _4}, {a, _8}, {a, _8}, {a, _4},           // There once was a ship
   {C, _4}, {E, _4}, {E, _4}, {E, _4p},                   // that put to sea
 
-  {E, _8}, {F, _4}, {D, _8}, {D, _8}, {D, _4},           // The name of that ship
+  {E, _8}, {F, _4}, {D, _8}, {D, _8}, {D, _4},           // The name of the ship
   {D, _8}, {F, _8}, {A, _8}, {A, _8}, {E, _4}, {E, _4p}, // was the Billy of Tea
 
   {E, _8}, {a, _4}, {a, _4}, {a, _4},                    // The winds blew up
@@ -101,7 +101,7 @@ note_hoehe_laenge notesRefrain[length_refrain] = {
   {F, _4}, {A, _4}, {E, _4}, {E, _2},              // and tea and rum
 
   {A, _2}, {A, _4}, {F, _8}, {F, _8},              // One day when the
-  {G, _8}, {G, _8}, {E, _4}, {E, _4},              // tonguin's done
+  {G, _8}, {G, _8}, {E, _4}, {E, _4},              // tonguin'is done
 
   {E, _4}, {E, _4}, {D, _4},                       // We'll take our 
   {C, _4}, {h, _4}, {a, _2p}                       // leave and go
