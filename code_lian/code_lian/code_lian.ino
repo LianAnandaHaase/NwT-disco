@@ -40,8 +40,10 @@ struct note_hoehe_laenge {
 const unsigned short tone_length = 70;
 const unsigned short pause = 10; //kurze lücke zwisch noten, um kurzt geiche hinter einander von langen zu unterscheiden.
 const unsigned short pin = 12; //pin an den der lautsprecher angeschlossen ist
+const unsigned short pin_sync = 10;
 const unsigned short length_refrain = 30;
 const unsigned short length_strophe = 35;
+int takt_position = 24;// Zählt mit, wo im Takt wir uns befinden für Signal. Der Auftakt ist eine Viertelnote, das sind 8 32tel 
 
 //Deklarationen von allen funktionen, dann kann man die Funktionen unten in beliebiger Reihenfolge schreiben
 void strophe ();
@@ -50,6 +52,7 @@ void play(const note* notes, const char** texte , unsigned short length);
 void displayText (const char* text);
 void playOnSpeaker (int pin, note n);
 char* substr(char* arr, int begin, int len);
+void sync(int tone_length);
 
 // Set the LCD address to 0x27 (or 0x3f, etc.) for a 16x2 LCD. Check your LCD module's documentation.
 LiquidCrystal_I2C lcd(0x27, 16, 2); // Adjust address and dimensions if needed
@@ -109,11 +112,14 @@ note_hoehe_laenge notesRefrain[length_refrain] = {
 
 void setup() {
   pinMode(pin, OUTPUT);
+  pinMode(pin_sync, OUTPUT);
+  Serial.begin(9600);
 
   // Initialize the LCD
   lcd.init();
   // Turn on the backlight
   lcd.backlight();
+  
 }
 
 void loop() {
@@ -146,8 +152,31 @@ void play(const note_hoehe_laenge* tones, const char** texte , unsigned short le
         tone(pin, 0);
         delay(pause);
 
+        Serial.println(texte[i]);
+        sync(tones[i].length);
+
     }
 }
+
+void sync(int tone_length)
+{
+    takt_position += tone_length;
+    if(takt_position == 32)//voller Takt sind 32/32
+    {
+       takt_position = 0;
+    }
+
+    if(takt_position == 0) 
+    {
+       digitalWrite(pin_sync, HIGH);
+       Serial.println("HIGH");
+    }
+    else 
+    {
+        digitalWrite(pin_sync, LOW);
+        Serial.println("LOW");
+    }
+ }
 
 //funktion, die text auf dem display anzeigt
 void displayText (const char* text)
