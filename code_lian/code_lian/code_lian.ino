@@ -150,7 +150,7 @@ void play(const note_hoehe_laenge* tones, const char** texte , unsigned short le
         playOnSpeaker (tones[i].tonhoehe );
 
         delay (tone_length * tones[i].length - pause);
-        tone(pin, 0);
+        noTone(pin);
         delay(pause);
 
         Serial.println(texte[i]);
