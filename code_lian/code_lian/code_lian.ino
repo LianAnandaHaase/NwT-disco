@@ -60,8 +60,8 @@ LiquidCrystal_I2C lcd(0x27, 16, 2); // Adjust address and dimensions if needed
 //array mit den lyrics des refrains
 const char* lyricsRefrain[length_refrain] = {
   "Soon", "Soon may", "Soon may the", "Wel", "Weller","Wellerman",
-  "Wellerman come", "and", "and bring", "and bring us",         
-  "and bring us    sug", "and bring us    sugar", "and", "and tea", "and tea and", 
+  "Wellerman come", "to", "to bring", "to bring us",         
+  "to bring us     sug", "to bring us     sugar", "and", "and tea", "and tea and", 
   "and tea and rum", "One", "One day", "One day when", 
   "One day when the", "ton", "tonguin'", "tonguin'is", "tonguin'is done",
   "We'll", "We'll take", "We'll take our", "We'll take our  leave", 
@@ -86,7 +86,7 @@ note_hoehe_laenge notesStrophe[length_strophe] = {
   {C, _4}, {E, _4}, {E, _4}, {E, _4p},                   // that put to sea
 
   {E, _8}, {F, _4}, {D, _8}, {D, _8}, {D, _4},           // The name of the ship
-  {D, _8}, {F, _8}, {A, _8}, {A, _8}, {E, _4}, {E, _4p}, // was the Billy of Tea
+  {D, _8}, {F, _8}, {A, _8}, {A, _8}, {E, _4}, {E, _4p}, // was the Billy o' Tea
 
   {E, _8}, {a, _4}, {a, _4}, {a, _4},                    // The winds blew up
   {C, _4}, {E, _4}, {E, _4}, {E, _4},                    // her bow dipped down
@@ -100,7 +100,7 @@ note_hoehe_laenge notesRefrain[length_refrain] = {
   {A, _2}, {A, _4p}, {F, _8}, {G, _8}, {G, _8},    // Soon may the Weller-
   {E, _4}, {E, _4p},                               // -man come
 
-  {E, _8}, {F, _4}, {D, _4}, {D, _8}, {E, _8},     //  And bring us sugar
+  {E, _8}, {F, _4}, {D, _4}, {D, _8}, {E, _8},     // To bring us sugar
   {F, _4}, {A, _4}, {E, _4}, {E, _2},              // and tea and rum
 
   {A, _2}, {A, _4}, {F, _8}, {F, _8},              // One day when the
