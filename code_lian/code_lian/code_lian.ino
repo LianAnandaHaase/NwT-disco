@@ -73,7 +73,7 @@ const char* lyricsStrophe[length_strophe] = {
    "There", "There once", "There once was", "There once was a", "There once was aship",       
    "that", "that put", "that put to", "that put to sea",  
    "The", "The name", "The name of", "The name of the the", "The name of the ship",                
-   "was", "was the", "was the Bil", "was the Billy", "was the Billy of", "was the billy ofTea",         
+   "was", "was the", "was the Bil", "was the Billy", "was the Billy o'", "was the Billy o'Tea",         
    "The", "The winds", "The winds blew",  "The winds blew  up",
    "her", "her bow", "her bow dipped", "her bow dipped  down",
    "O", "O blow", "O blow my", "O blow my bul", "Oh blow my bully",
