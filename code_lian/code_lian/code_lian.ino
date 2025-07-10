@@ -114,7 +114,7 @@ void setup() {
   pinMode(pin, OUTPUT);
   pinMode(LED_BUILTIN, OUTPUT);
   pinMode(pin_sync, OUTPUT);
-  Serial.begin(9600);
+  //Serial.begin(9600);
 
   // Initialize the LCD
   lcd.init();
@@ -153,7 +153,7 @@ void play(const note_hoehe_laenge* tones, const char** texte , unsigned short le
         noTone(pin);
         delay(pause);
 
-        Serial.println(texte[i]);
+        //Serial.println(texte[i]);
         sync(tones[i].length);
 
     }
@@ -171,13 +171,13 @@ void sync(int tone_length)
     {
        digitalWrite(pin_sync, HIGH);
        digitalWrite(LED_BUILTIN, HIGH);
-       Serial.println("HIGH");
+       //Serial.println("HIGH");
     }
     else 
     {
         digitalWrite(pin_sync, LOW);
         digitalWrite(LED_BUILTIN, LOW);
-        Serial.println("LOW");
+        //Serial.println("LOW");
     }
  }
 
