@@ -112,6 +112,7 @@ note_hoehe_laenge notesRefrain[length_refrain] = {
 
 void setup() {
   pinMode(pin, OUTPUT);
+  pinMode(LED_BUILTIN, OUTPUT);
   pinMode(pin_sync, OUTPUT);
   Serial.begin(9600);
 
@@ -169,11 +170,13 @@ void sync(int tone_length)
     if(takt_position == 0) 
     {
        digitalWrite(pin_sync, HIGH);
+       digitalWrite(LED_BUILTIN, HIGH);
        Serial.println("HIGH");
     }
     else 
     {
         digitalWrite(pin_sync, LOW);
+        digitalWrite(LED_BUILTIN, LOW);
         Serial.println("LOW");
     }
  }
