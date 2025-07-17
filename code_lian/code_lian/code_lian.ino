@@ -40,10 +40,14 @@ struct note_hoehe_laenge {
 const unsigned short tone_length = 70;
 const unsigned short pause = 10; //kurze lücke zwisch noten, um kurzt geiche hinter einander von langen zu unterscheiden.
 const unsigned short pin = 12; //pin an den der lautsprecher angeschlossen ist
+const unsigned short blau = 7; //pins an die die rgb angeschlossen ist
+const unsigned short grun = 6;
+const unsigned short rot = 5;
 const unsigned short pin_sync = 10;
 const unsigned short length_refrain = 30;
 const unsigned short length_strophe = 35;
 int takt_position = 24;// Zählt mit, wo im Takt wir uns befinden für Signal. Der Auftakt ist eine Viertelnote, das sind 8 32tel 
+
 
 //Deklarationen von allen funktionen, dann kann man die Funktionen unten in beliebiger Reihenfolge schreiben
 void strophe ();
@@ -53,6 +57,7 @@ void displayText (const char* text);
 void playOnSpeaker (int pin, note n);
 char* substr(char* arr, int begin, int len);
 void sync(int tone_length);
+void rgb(bool input);
 
 // Set the LCD address to 0x27 (or 0x3f, etc.) for a 16x2 LCD. Check your LCD module's documentation.
 LiquidCrystal_I2C lcd(0x27, 16, 2); // Adjust address and dimensions if needed
@@ -114,6 +119,9 @@ void setup() {
   pinMode(pin, OUTPUT);
   pinMode(LED_BUILTIN, OUTPUT);
   pinMode(pin_sync, OUTPUT);
+  pinMode(blau, OUTPUT);
+  pinMode(grun, OUTPUT);
+  pinMode(rot, OUTPUT);
   //Serial.begin(9600);
 
   // Initialize the LCD
@@ -172,13 +180,31 @@ void sync(int tone_length)
        digitalWrite(pin_sync, HIGH);
        digitalWrite(LED_BUILTIN, HIGH);
        //Serial.println("HIGH");
+       rgb (true);
     }
     else 
     {
         digitalWrite(pin_sync, LOW);
         digitalWrite(LED_BUILTIN, LOW);
         //Serial.println("LOW");
+        rgb(false);
     }
+ }
+
+ void rgb(bool input)
+ {
+    if(input == true)
+    {
+      analogWrite(blau, 200);
+      analogWrite(grun, 0);
+      analogWrite(rot , 250);
+    }
+    else 
+    {
+      analogWrite(blau, 0);
+      analogWrite(grun, 0);
+      analogWrite(rot, 0);
+    };
  }
 
 //funktion, die text auf dem display anzeigt
@@ -209,10 +235,10 @@ void displayText (const char* text)
 //funktion, die einen teil der zeichenkette extrahiert
 char* substr(const char* arr, int begin, int len)
 {
-    char* res = new char[len + 1];
+    char* res = new char[len + 1];//Um eins länger wegen Null-Termination
     for (int i = 0; i < len; i++)
         res[i] = *(arr + begin + i);
-    res[len] = 0;
+    res[len] = 0;//Null-Termination
     return res;
 }
 
